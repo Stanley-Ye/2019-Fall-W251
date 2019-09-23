@@ -23,9 +23,11 @@ try:
     vsi_broker.connect(vsi_broker_address, 1883)
 except:
     print("FAILED to connect to VSI")
+else:
+    print("SUCCEEDED to connect to VSI")
 
 # Jetson
-client_address = "192.168.1.18"
+client_address = "172.18.0.2"
 client = mqtt.Client("jetson")
 client.on_connect = on_connect
 client.on_message = on_message
@@ -33,6 +35,8 @@ try:
     client.connect(client_address, 1883)
 except:
     print("FAILED to connect to Jetson")
+else:
+    print("SUCCEEDED to connect to Jetson")
 
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.

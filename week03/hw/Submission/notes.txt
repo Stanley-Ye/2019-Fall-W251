@@ -2,10 +2,9 @@
 docker run -it --name alpine1 alpine sh
 
 (*) Create Docker images
-- Dockerfile.msqtt_broker
 sudo docker build -f Dockerfile.msqtt_broker -t msqtt_broker .
-- Dockerfile.msqtt_forwarder
 sudo docker build -f Dockerfile.msqtt_forwarder -t msqtt_forwarder .
+sudo docker build -f Dockerfile.face_detector -t face_detector .
 
 
 ### Jetson ###
@@ -16,8 +15,15 @@ sudo docker network create --driver bridge hw03
 sudo docker run --name broker --network hw03 -p 1883:1883 msqtt_broker
 
 (*) Create container: forwarder
-sudo docker run --name broker --network hw03 -p 1883:1883 msqtt_broker
+# Assumes IP of broker is 172.18.0.2
 sudo docker run --name forwarder --network hw03 -ti msqtt_forwarder sh
+python3 forwarder.py
+
+(*) Create container: detector
+# Debug by running (python face_detector.py) in terminal without container.
+# Assumes IP of broker is 172.18.0.2 and topic is "image"
+sudo docker run --name detector --network hw03 --device=/dev/video1:/dev/video1 -ti face_detector bash
+python face_detector.py
 
 
 ### VSI ###
@@ -27,3 +33,13 @@ sudo docker network create --driver bridge hw03
 (*) Create container: broker
 sudo docker run --name broker --network hw03 -p 1883:1883 msqtt_broker
 
+
+---
+
+### DEBUG ###
+(*) Error starting userland proxy: listen tcp 0.0.0.0:1883: bind: address already in use.
+    netstat -pna | grep 1883
+    kill 5542
+
+(*) Show IP for docker container
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' broker

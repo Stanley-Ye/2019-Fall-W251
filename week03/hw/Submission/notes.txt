@@ -3,9 +3,10 @@ docker run -it --name alpine1 alpine sh
 
 (*) Create Docker images
 - Dockerfile.msqtt_broker
-sudo docker build -f Dockerfiles/Dockerfile.msqtt_broker -t msqtt_broker .
+sudo docker build -f Dockerfile.msqtt_broker -t msqtt_broker .
 - Dockerfile.msqtt_forwarder
-sudo docker build -f Dockerfiles/Dockerfile.msqtt_forwarder -t msqtt_forwarder .
+sudo docker build -f Dockerfile.msqtt_forwarder -t msqtt_forwarder .
+
 
 ### Jetson ###
 (*) Create network bridge
@@ -14,5 +15,15 @@ sudo docker network create --driver bridge hw03
 (*) Create container: broker
 sudo docker run --name broker --network hw03 -p 1883:1883 msqtt_broker
 
+(*) Create container: forwarder
+sudo docker run --name broker --network hw03 -p 1883:1883 msqtt_broker
+sudo docker run --name forwarder --network hw03 -ti msqtt_forwarder sh
 
+
+### VSI ###
+(*) Create network bridge
+sudo docker network create --driver bridge hw03
+
+(*) Create container: broker
+sudo docker run --name broker --network hw03 -p 1883:1883 msqtt_broker
 

@@ -1,4 +1,6 @@
 FROM alpine
-RUN apk update && apk add mosquitto
-CMD /usr/sbin/mosquitto
-
+RUN apk update
+RUN apk add py3-paho-mqtt
+WORKDIR /
+COPY forwarder.py /
+RUN python3 forwarder.py

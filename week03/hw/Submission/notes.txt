@@ -5,6 +5,7 @@ docker run -it --name alpine1 alpine sh
 sudo docker build -f Dockerfile.msqtt_broker -t msqtt_broker .
 sudo docker build -f Dockerfile.msqtt_forwarder -t msqtt_forwarder .
 sudo docker build -f Dockerfile.face_detector -t face_detector .
+sudo docker build -f Dockerfile.image_saver -t image_saver .
 
 
 ### Jetson ###
@@ -32,6 +33,10 @@ sudo docker network create --driver bridge hw03
 
 (*) Create container: broker
 sudo docker run --name broker --network hw03 -p 1883:1883 msqtt_broker
+
+(*) Create container: image_saver
+sudo docker run --name image_saver --network hw03 -ti image_saver bash
+python3 image_saver.py
 
 
 ---

@@ -12,15 +12,15 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
-    vsi_broker.publish("image", msg.payload)
+    vsi_broker.publish("cloudimage", payload=msg.payload)
+    print("Message received and sent to VSI.")
     
 
 # VSI
 vsi_broker_address = "169.44.183.162"
 vsi_broker = mqtt.Client("vsi")
 try:
-    vsi_broker.connect(vsi_broker_address, 1883)
+    vsi_broker.connect(vsi_broker_address)
 except:
     print("FAILED to connect to VSI")
 else:
@@ -28,11 +28,11 @@ else:
 
 # Jetson
 client_address = "172.18.0.2"
-client = mqtt.Client("jetson")
+client = mqtt.Client("forwarder")
 client.on_connect = on_connect
 client.on_message = on_message
 try:
-    client.connect(client_address, 1883)
+    client.connect(client_address)
 except:
     print("FAILED to connect to Jetson")
 else:

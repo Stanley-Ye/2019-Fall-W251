@@ -3,6 +3,7 @@ import cv2
 import paho.mqtt.client as mqtt
 import os.path
 from os import path
+import time
 
 # 1 should correspond to /dev/video1 , your USB camera. The 0 is reserved for the TX2 onboard camera
 cap = cv2.VideoCapture(1)
@@ -21,10 +22,16 @@ counter = 0
 prev_counter = -1
 num_images = 3
 
+
+def on_publish(client, msg, rc):
+    print("Image published")
+
+
 # Connect to broker
 try:
     client = mqtt.Client("jetson")
     client_address = "172.18.0.2"
+    client.on_publish = on_publish
     client.connect(client_address)
 except:
     print("FAILED to connect to Jetson")
@@ -53,16 +60,10 @@ while(counter < num_images):
 
         # Publish msg
         client.publish(topic, payload=msg)
-        print("Image published: %i" %(counter))
+        #print("Image published: %i" %(counter))
         counter = counter + 1
 
-        # Debug
-        cv2.imshow('frame',gray)
-        cv2.waitKey(1)
-
-        # Capture new image
-        break
-
+        
 # Conclude
 cap.release()
 cv2.destroyAllWindows()

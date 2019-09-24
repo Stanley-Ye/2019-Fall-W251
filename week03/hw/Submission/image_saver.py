@@ -38,7 +38,7 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("image")
+    client.subscribe("cloudimage")
 
 # The callback for when a PUBLISH message is received from the server.
 count = 1
@@ -56,9 +56,12 @@ def on_message(client, userdata, msg):
 
     
 # Connect to broker (VSI)
+client = mqtt.Client("vsi")
+client_address = "172.19.0.2"
+client.on_connect = on_connect
+client.on_message = on_message
+
 try:
-    client = mqtt.Client("vsi")
-    client_address = "172.19.0.2"
     client.connect(client_address)
 except:
     print("FAILED to connect to VSI")

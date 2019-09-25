@@ -20,7 +20,7 @@ face_cascade = cv2.CascadeClassifier(xml)
 topic = "image"
 counter = 0
 prev_counter = -1
-num_images = 3
+num_images = 20
 
 
 def on_publish(client, msg, rc):
@@ -28,15 +28,11 @@ def on_publish(client, msg, rc):
 
 
 # Connect to broker
-try:
-    client = mqtt.Client("jetson")
-    client_address = "172.18.0.2"
-    client.on_publish = on_publish
-    client.connect(client_address)
-except:
-    print("FAILED to connect to Jetson")
-else:
-    print("SUCCEEDED to connect to Jetson")
+client = mqtt.Client("jetson")
+client_address = "172.18.0.4"
+client.on_publish = on_publish
+client.connect(client_address)
+print("SUCCEEDED to connect to Jetson")
     
 # Capture images
 while(counter < num_images):
@@ -62,6 +58,7 @@ while(counter < num_images):
         client.publish(topic, payload=msg)
         #print("Image published: %i" %(counter))
         counter = counter + 1
+    time.sleep(1)
 
         
 # Conclude

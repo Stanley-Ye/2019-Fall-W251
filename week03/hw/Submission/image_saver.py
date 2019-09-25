@@ -1,17 +1,17 @@
 # Object Storage
 # Copy from IBM Cloud account
 credentials = {
-  "apikey": "xBX1K4-FdKQB7_MuWWUgMS-l9qzMTlkjO9F9WiLl6sze",
+  "apikey": "-LGCqqvSwnTn1c9dKM6en_BgxAuW7Sqr6rn_ieHvHYqA",
   "cos_hmac_keys": {
-    "access_key_id": "9af8829fd7a44419a85d18d5ef542d56",
-    "secret_access_key": "72faa530caae018e7d3e834c1d27004f48a0c95de805ccb0"
+    "access_key_id": "f7094ac9c312427ea5987dcb805faf2a",
+    "secret_access_key": "c405412de352f94e8d9559f87b93a824fa02772850fe0489"
   },
   "endpoints": "https://control.cloud-object-storage.cloud.ibm.com/v2/endpoints",
-  "iam_apikey_description": "Auto-generated for key 9af8829f-d7a4-4419-a85d-18d5ef542d56",
+  "iam_apikey_description": "Auto-generated for key f7094ac9-c312-427e-a598-7dcb805faf2a",
   "iam_apikey_name": "Service credentials-1",
   "iam_role_crn": "crn:v1:bluemix:public:iam::::serviceRole:Manager",
-  "iam_serviceid_crn": "crn:v1:bluemix:public:iam-identity::a/d037c9645257443e814577efd4ed2d9f::serviceid:ServiceId-06a1eaa2-db6e-4ae1-b9a7-9b72c262cd9e",
-  "resource_instance_id": "crn:v1:bluemix:public:cloud-object-storage:global:a/d037c9645257443e814577efd4ed2d9f:b10bdac1-9c74-48d7-a520-98d2d4d54fab::"
+  "iam_serviceid_crn": "crn:v1:bluemix:public:iam-identity::a/d037c9645257443e814577efd4ed2d9f::serviceid:ServiceId-38816ce8-30ce-4803-b1f0-f8a99e8b9e81",
+  "resource_instance_id": "crn:v1:bluemix:public:cloud-object-storage:global:a/d037c9645257443e814577efd4ed2d9f:1c5500be-176d-4e6c-a4bb-ff0bc3f07a2a::"
 }
 
 
@@ -22,11 +22,11 @@ from ibm_botocore.client import Config, ClientError
 import ibm_boto3
 
 cos = ibm_boto3.resource("s3",
-                         ibm_api_key_id='xBX1K4-FdKQB7_MuWWUgMS-l9qzMTlkjO9F9WiLl6sze',
-                         ibm_service_instance_id='crn:v1:bluemix:public:cloud-object-storage:global:a/d037c9645257443e814577efd4ed2d9f:b10bdac1-9c74-48d7-a520-98d2d4d54fab::',
+                         ibm_api_key_id='-LGCqqvSwnTn1c9dKM6en_BgxAuW7Sqr6rn_ieHvHYqA',
+                         ibm_service_instance_id='crn:v1:bluemix:public:cloud-object-storage:global:a/d037c9645257443e814577efd4ed2d9f:1c5500be-176d-4e6c-a4bb-ff0bc3f07a2a::',
                          ibm_auth_endpoint='https://iam.cloud.ibm.com/identity/token',
                          config=Config(signature_version="oauth"),
-                         endpoint_url='https://s3.ap.cloud-object-storage.appdomain.cloud')
+                         endpoint_url='https://s3.us-east.cloud-object-storage.appdomain.cloud')
 
 
 import paho.mqtt.client as mqtt
@@ -44,7 +44,7 @@ def on_message(client, userdata, msg):
     print("Message received")
     global count, cos
     print("BB0")
-    bucket = "sye-w251-hw3"
+    bucket = "sye2"
     print("BB1")
     object = "image_" + str(count) + ".png"
     print("BB2")

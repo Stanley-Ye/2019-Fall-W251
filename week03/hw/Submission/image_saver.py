@@ -43,29 +43,15 @@ count = 1
 def on_message(client, userdata, msg):
     print("Message received")
     global count, cos
-    print("BB0")
     bucket = "sye2"
-    print("BB1")
     object = "image_" + str(count) + ".png"
-    print("BB2")
     count = count + 1
-    print("BF0")
     try:
-        print("BF1")
-        #print(msg.payload)
-        #cos.put_object(Bucket=bucket, Key=object, Body=msg.payload)
         cos.Bucket(name=bucket).put_object(Key=object, Body=msg.payload)
     except ClientError as be:
         print("CLIENT ERROR: {0}\n".format(be))
     except Exception as e:
-        print("Unable to create bucket: {0}".format(e))
-        
-
-    #except ClientError as e:
-    #    error_code = e.response['Error']['Code']
-    #    print("ERROR: %s" %(error_code))
-    print("AF")
-        
+        print("Unable to create bucket: {0}".format(e))        
     print("Saved (%s) to bucket (%s)" %(object, bucket))
 
 def on_subscribe(client, userdata, mid, granted_qos):

@@ -14,7 +14,6 @@ def on_connect1(client, userdata, flags, rc):
     client.subscribe(topic1)
 
 def on_connect2(client, userdata, flags, rc):
-    print("V2: %s" %(client))
     global topic2
     print("Connected2 with result code "+str(rc))
     client.subscribe(topic=topic2, qos=1)
@@ -23,7 +22,6 @@ def on_connect2(client, userdata, flags, rc):
 def on_message1(client, userdata, msg):
     print("Message received1")
     global vsi_broker, topic2
-    #print("V2: %s" %(vsi_broker))
     rc = vsi_broker.publish(topic=topic2, payload=msg.payload, qos=1, retain=False)
     print("vsi_broker.publish: %s" %(rc))
 
@@ -40,7 +38,6 @@ def on_publish2(client, userdata, mid):
 # VSI
 vsi_broker_address = "169.44.183.162"
 vsi_broker = mqtt.Client("vsi")
-print("V1: %s" %(vsi_broker))
 vsi_broker.on_connect = on_connect2
 vsi_broker.on_publish = on_publish2
 vsi_broker.on_message = on_message2

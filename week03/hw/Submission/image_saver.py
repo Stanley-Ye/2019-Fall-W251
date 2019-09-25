@@ -15,19 +15,18 @@ credentials = {
 }
 
 
-# Reference: https://cloud.ibm.com/docs/services/cloud-object-storage/libraries?topic=cloud-object-storage-python
-import ibm_boto3
+# References:
+# - https://cloud.ibm.com/docs/services/cloud-object-storage/libraries?topic=cloud-object-storage-python
+# - https://dataplatform.cloud.ibm.com/analytics/notebooks/v2/ee1d0b44-0fce-4cf6-8545-e1dc961d0668/view?access_token=c0489b861ab65f63be7e3c5ce962003a2a0197660e67ecb140c477c2e11b5fe3
 from ibm_botocore.client import Config, ClientError
+import ibm_boto3
 
 cos = ibm_boto3.resource("s3",
-    ibm_api_key_id=credentials['apikey'],
-    ibm_service_instance_id=credentials['resource_instance_id'],
-    ibm_auth_endpoint='https://iam.bluemix.net/oidc/token',
-    config=Config(signature_version="oauth"),
-    endpoint_url='https://ss3.sjc04.cloud-object-storage.appdomain.cloud'
-)
-
-
+                         ibm_api_key_id='xBX1K4-FdKQB7_MuWWUgMS-l9qzMTlkjO9F9WiLl6sze',
+                         ibm_service_instance_id='crn:v1:bluemix:public:cloud-object-storage:global:a/d037c9645257443e814577efd4ed2d9f:b10bdac1-9c74-48d7-a520-98d2d4d54fab::',
+                         ibm_auth_endpoint='https://iam.cloud.ibm.com/identity/token',
+                         config=Config(signature_version="oauth"),
+                         endpoint_url='https://s3.ap.cloud-object-storage.appdomain.cloud')
 
 
 import paho.mqtt.client as mqtt
@@ -35,9 +34,6 @@ import paho.mqtt.client as mqtt
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
-
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
     topic = "cloudimage"
     client.subscribe(topic=topic, qos=1)
     print("Subscribed: %s" %(topic))
@@ -46,16 +42,34 @@ def on_connect(client, userdata, flags, rc):
 count = 1
 def on_message(client, userdata, msg):
     print("Message received")
-    global count
-    bucket = 'sye-w251-hw3'
-    object = "image_" + count
+    global count, cos
+    print("BB0")
+    bucket = "sye-w251-hw3"
+    print("BB1")
+    object = "image_" + str(count) + ".png"
+    print("BB2")
     count = count + 1
-    cos.put_object(
-        Bucket=bucket,
-        Key=object,
-        Body=msg.payload
-    )
+    print("BF0")
+    try:
+        print("BF1")
+        #print(msg.payload)
+        #cos.put_object(Bucket=bucket, Key=object, Body=msg.payload)
+        cos.Bucket(name=bucket).put_object(Key=object, Body=msg.payload)
+    except ClientError as be:
+        print("CLIENT ERROR: {0}\n".format(be))
+    except Exception as e:
+        print("Unable to create bucket: {0}".format(e))
+        
+
+    #except ClientError as e:
+    #    error_code = e.response['Error']['Code']
+    #    print("ERROR: %s" %(error_code))
+    print("AF")
+        
     print("Saved (%s) to bucket (%s)" %(object, bucket))
+
+def on_subscribe(client, userdata, mid, granted_qos):
+    print("Subscribed")
 
     
 # Connect to broker (VSI)
@@ -63,6 +77,7 @@ client = mqtt.Client("vsi_broker")
 client_address = "172.19.0.2"
 client.on_connect = on_connect
 client.on_message = on_message
+client.on_subscribe = on_subscribe
 client.connect(client_address)
 print("SUCCEEDED to connect to VSI")
 

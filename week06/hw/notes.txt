@@ -2,4 +2,5 @@ docker logs e3c12b390adc49505ccbb2f9e40b775a0fe92762947a6d314b5c1be50be8d586
 158.175.148.195:8888/?token=3d772a40d0d86ebb301cc0e945cc40e620ab0854f23e95b0
 
 git clone https://github.com/Stanley-Ye/2019-Fall-W251.git ~/v2
-
+git config --global user.name "Stanley Ye"
+git config --global user.email stanley.ye@berkeley.edu

@@ -7,11 +7,8 @@ FROM ubuntu
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update
-RUN apt install -y python3-opencv python3-pip vim-tiny mosquitto-clients libopencv-dev
-#RUN pip3 install --upgrade pip
-RUN pip3 install paho-mqtt
-RUN pip3 install mtcnn
-RUN pip3 install numpy tensorflow
+RUN apt install -y python-opencv python-pip vim-tiny mosquitto-clients libopencv-dev
+RUN pip install paho-mqtt
 
 WORKDIR /
 COPY face_detector.py /

@@ -4,12 +4,6 @@ import paho.mqtt.client as mqtt
 import os.path
 from os import path
 import time
-#import mtcnn
-from mtcnn.mtcnn import MTCNN
-#print(mtcnn.__version__)
-
-# create the detector, using default weights
-detector = MTCNN()
 
 # 1 should correspond to /dev/video1 , your USB camera. The 0 is reserved for the TX2 onboard camera
 cap = cv2.VideoCapture(1)

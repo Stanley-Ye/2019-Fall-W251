@@ -45,7 +45,7 @@ vsi_broker.connect(vsi_broker_address)
 print("SUCCEEDED to connect to VSI")
 
 # Jetson
-jetson_address = "172.18.0.4"
+jetson_address = "172.18.0.2"
 jetson = mqtt.Client("forwarder")
 jetson.on_connect = on_connect1
 jetson.on_message = on_message1

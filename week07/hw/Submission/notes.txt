@@ -23,7 +23,9 @@ python3 forwarder.py
 (*) Create container: detector
 # Debug by running (python face_detector.py) in terminal without container.
 # Assumes IP of broker is 172.18.0.2 and topic is "image"
-sudo docker run --name detector --network hw03 --device=/dev/video1:/dev/video1 -ti face_detector bash
+#sudo docker run --name detector --network hw03 --device=/dev/video1:/dev/video1 -ti face_detector bash
+sudo docker run --name detector2 --network hw03 --device=/dev/video1:/dev/video1 -ti w251/tensorflow:tx2-3.3_b39-py2 bash
+
 python face_detector.py
 
 

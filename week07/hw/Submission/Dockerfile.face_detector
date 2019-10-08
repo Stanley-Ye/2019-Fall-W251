@@ -1,0 +1,15 @@
+# References:
+# - v2/week03/labs/Dockerfile.opencv-mqtt
+# - v2/week01/lab/Dockerfile.yolo
+
+FROM ubuntu
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update
+RUN apt install -y python-opencv python-pip vim-tiny mosquitto-clients libopencv-dev
+RUN pip install paho-mqtt
+
+WORKDIR /
+COPY face_detector.py /
+COPY haarcascade_frontalface_default.xml /

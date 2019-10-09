@@ -50,15 +50,13 @@ while(counter < num_images):
 
     # We don't use the color information, so might as well save space
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-    # face detection and other logic goes here
-    #faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-
-    # Show frame
-    #pyplot.imshow(frame)
     
     # Use MTCNN to detect faces
+    start = time.time()
     result_list = detector.detect_faces(frame)
+    end = time.time()
+    frames_per_second = 1 / (end - start)
+    print("FPS: %f" %(frames_per_second))
     
     # Publish faces to MQTT
     for i in range(len(result_list)):

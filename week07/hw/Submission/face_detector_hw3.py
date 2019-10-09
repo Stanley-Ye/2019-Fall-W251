@@ -46,7 +46,12 @@ while(counter < num_images):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # face detection and other logic goes here
+    start = time.time()
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+    end = time.time()
+    frames_per_second = 1 / (end - start)
+    print("FPS: %f" %(frames_per_second))
+    
     for (x,y,w,h) in faces:
         # Reference code: https://docs.opencv.org/3.4.1/d7/d8b/tutorial_py_face_detection.html
         cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)

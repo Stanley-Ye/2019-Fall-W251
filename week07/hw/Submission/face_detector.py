@@ -4,9 +4,9 @@ import paho.mqtt.client as mqtt
 import os.path
 from os import path
 import time
-#import mtcnn
+
+from matplotlib import pyplot
 from mtcnn.mtcnn import MTCNN
-#print(mtcnn.__version__)
 
 # create the detector, using default weights
 detector = MTCNN()
@@ -52,18 +52,34 @@ while(counter < num_images):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # face detection and other logic goes here
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-    for (x,y,w,h) in faces:
-        # Reference code: https://docs.opencv.org/3.4.1/d7/d8b/tutorial_py_face_detection.html
-        cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
-        roi_gray = frame[y:y+h, x:x+w]
-        rc,png = cv2.imencode('.png', roi_gray)
-        msg = png.tobytes()
+    #faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 
+    # Show frame
+    #pyplot.imshow(frame)
+    
+    # Use MTCNN to detect faces
+    result_list = detector.detect_faces(frame)
+    
+    # Publish faces to MQTT
+    for i in range(len(result_list)):
+        # Get confidence
+        conf = result_list[i]['confidence']
+        print("CONF=%f" %(conf))
+        print(result_list[i])
+
+        # get coordinates
+        x1, y1, width, height = result_list[i]['box']
+        x2, y2 = x1 + width, y1 + height
+        cv2.rectangle(frame,(x1,y1),(x2,y2),(255,0,0),2)
+        face = frame[y1:y2, x1:x2]
+        rc,png = cv2.imencode('.png', face)
+        msg = png.tobytes()
+   
         # Publish msg
         client.publish(topic, payload=msg)
-        #print("Image published: %i" %(counter))
+        print("Image published: %i" %(counter))
         counter = counter + 1
+        
     time.sleep(1)
 
         

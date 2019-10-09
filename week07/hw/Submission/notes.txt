@@ -1,3 +1,24 @@
+# Jetson #
+(*) Restart containers
+docker restart broker
+
+docker restart forwarder
+docker attach forwarder
+python3 forwarder.py 
+
+docker run --name detector --network hw03 --device=/dev/video1:/dev/video1 -ti w251/tensorrtlab05:dev-tx2-4.2.1_b97 bash
+docker cp face_detector.py detector:/
+apt-get update
+apt install -y python3-opencv python3-pip vim-tiny mosquitto-clients libopencv-dev
+pip3 install paho-mqtt mtcnn
+python3 /face_detector.py
+
+
+
+docker run --privileged --rm -p 8888:8888 -d w251/tensorrtlab05:dev-tx2-4.2.1_b97
+
+---
+
 (*) Run Docker interactively for initial setup
 docker run -it --name alpine1 alpine sh
 
@@ -24,7 +45,8 @@ python3 forwarder.py
 # Debug by running (python face_detector.py) in terminal without container.
 # Assumes IP of broker is 172.18.0.2 and topic is "image"
 #sudo docker run --name detector --network hw03 --device=/dev/video1:/dev/video1 -ti face_detector bash
-sudo docker run --name detector2 --network hw03 --device=/dev/video1:/dev/video1 -ti w251/tensorflow:tx2-3.3_b39-py2 bash
+#sudo docker run --name detector --network hw03 --device=/dev/video1:/dev/video1 -ti w251/tensorflow:tx2-3.3_b39-py2 bash
+sudo docker run --name detector --network hw03 --device=/dev/video1:/dev/video1 -ti w251/tensorrtlab05:dev-tx2-4.2.1_b97 bash
 
 python face_detector.py
 

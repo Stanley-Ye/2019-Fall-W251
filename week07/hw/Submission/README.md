@@ -1,6 +1,6 @@
 ### Questions
 * Describe your solution in detail.  What neural network did you use? What dataset was it trained on? What accuracy does it achieve?
-  - For face detection, I used the Multi-task Cascade CNN (MTCNN) with the pre-trained model.  According to this [article] (https://blog.datawow.io/face-detection-haar-cascade-vs-mtcnn-13af4aa180e6), MTCNN achieves 98% accuracy in face detection, compared to 95% for OpenCV.
+  - For face detection, I used the Multi-task Cascade CNN (MTCNN) with the pre-trained model.  According to this [article](https://blog.datawow.io/face-detection-haar-cascade-vs-mtcnn-13af4aa180e6), MTCNN achieves 98% accuracy in face detection, compared to 95% for OpenCV.
 * Does it achieve reasonable accuracy in your empirical tests? Would you use this solution to develop a robust, production-grade system?
   - During my testing, MTCNN achieved high accuracy and appears to be a robust, production-grade system.
 * What framerate does this method achieve on the Jetson? Where is the bottleneck?
@@ -13,7 +13,7 @@
 * Code related to the neural face detector
   - face_detector.py
 * Object storage for detected face images
-  - https://cloud.ibm.com/objectstorage/crn%3Av1%3Abluemix%3Apublic%3Acloud-object-storage%3Aglobal%3Aa%2Fd037c9645257443e814577efd4ed2d9f%3A1c5500be-176d-4e6c-a4bb-ff0bc3f07a2a%3A%3A?bucket=sye2&bucketRegion=us-east&endpoint=s3.us-east.cloud-object-storage.appdomain.cloud&paneId=bucket_overview
+  - [link](https://cloud.ibm.com/objectstorage/crn%3Av1%3Abluemix%3Apublic%3Acloud-object-storage%3Aglobal%3Aa%2Fd037c9645257443e814577efd4ed2d9f%3A1c5500be-176d-4e6c-a4bb-ff0bc3f07a2a%3A%3A?bucket=sye2&bucketRegion=us-east&endpoint=s3.us-east.cloud-object-storage.appdomain.cloud&paneId=bucket_overview)
 
 
 ### Jetson TX2 ###

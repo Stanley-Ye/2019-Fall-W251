@@ -11,7 +11,7 @@
 
 ### Turn-In
 * Code related to the neural face detector
-  - face_detector.py
+  - [face_detector.py](https://github.com/Stanley-Ye/2019-Fall-W251/blob/master/week07/hw/Submission/face_detector.py)
 * Object storage for detected face images
   - [link](https://cloud.ibm.com/objectstorage/crn%3Av1%3Abluemix%3Apublic%3Acloud-object-storage%3Aglobal%3Aa%2Fd037c9645257443e814577efd4ed2d9f%3A1c5500be-176d-4e6c-a4bb-ff0bc3f07a2a%3A%3A?bucket=sye2&bucketRegion=us-east&endpoint=s3.us-east.cloud-object-storage.appdomain.cloud&paneId=bucket_overview)
 

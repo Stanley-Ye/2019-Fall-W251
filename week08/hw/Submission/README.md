@@ -1,0 +1,27 @@
+### Part 1: Image Annotation
+1. In the time allowed, how many images did you annotate?
+   - I annotated 40 images in 20 minutes.
+
+2. Home many instances of the Millennium Falcon did you annotate? How many TIE Fighters?
+   - 14 instances of the Millenium Falcon and 47 TIE Fighters
+
+3. Based on this experience, how would you handle the annotation of large image data set?
+   - I would randomly select pictures to annotate rather than annotate images in sequence, since images in sequence tended to be similar.
+
+4. Think about image augmentation? How would augmentations such as flip, rotation, scale, cropping, and translation effect the annotations?
+   - Augmentations could change the dimensions and aspect ratios of the annotations.
+
+
+### Part 2: Image Augmentation
+1. Describe the following augmentations in your own words
+   - Flip - Flip Horizontal is to mirror along the y-axis while Flip Vertical is to mirroer along the x-axis.
+   - Rotation - Rotate counter-clockwise by given number of degrees.
+   - Scale - Shrink or stretch the image.  Zoom in/out of the image.
+   - Crop - Keep only part of the image.
+   - Translation - Move the image up/down/left/right while maintaining the same size and aspect ratio.
+   - Noise - Inject random (noise) pixels into the image to obscure it.
+
+
+### Part 3: Audio Annotation
+1. Image annotations require the coordinates of the objects and their classes; in your option, what is needed for an audio annotation?
+   - Audio annotations require frequency (i.e., wavelength) and intensity (i.e., volume).

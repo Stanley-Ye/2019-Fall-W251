@@ -1,0 +1,26 @@
+<annotation>
+	<folder>images</folder>
+	<filename>videoplayback0784.jpg</filename>
+	<path>/home/sye/W251/week08/hw/Submission/images/videoplayback0784.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1000</width>
+		<height>563</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>MF</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>260</xmin>
+			<ymin>233</ymin>
+			<xmax>720</xmax>
+			<ymax>367</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -27,12 +27,12 @@ base_params = {
   "use_horovod": True,
   "num_gpus": 1, # when using Horovod we set number of workers with params to mpirun
   "batch_size_per_gpu": 256,  # this size is in sentence pairs, reduce it if you get OOM
-  "max_steps": 300000,
+  "max_steps": 50000,
   "save_summaries_steps": 100,
   "print_loss_steps": 100,
   "print_samples_steps": 100,
   "eval_steps": 4001,
-  "save_checkpoint_steps": 299998,
+  "save_checkpoint_steps": 49998,
   "logdir": "/data/en-de-transformer/",
   #"dtype": tf.float32, # to enable mixed precision, comment this line and uncomment two below lines
   "dtype": "mixed",

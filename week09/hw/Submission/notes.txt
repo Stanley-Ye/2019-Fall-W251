@@ -1,0 +1,39 @@
+(*) Get a pair of GPU VMs in Softlayer
+ibmcloud sl vs create --datacenter=lon06 --hostname=p100a --domain=sye.com --image=2263543 --billing=hourly  --network 1000 --key=1558894 --flavor AC1_16X120X100 --san
+ibmcloud sl vs create --datacenter=lon06 --hostname=p100b --domain=sye.com --image=2263543 --billing=hourly  --network 1000 --key=1558894 --flavor AC1_16X120X100 --san
+ibmcloud sl vs create --datacenter=lon04 --hostname=v100a --domain=sye.com --image=2263543 --billing=hourly  --network 1000 --key=1558894 --flavor AC2_16X120X100 --san
+ibmcloud sl vs create --datacenter=lon04 --hostname=v100b --domain=sye.com --image=2263543 --billing=hourly  --network 1000 --key=1558894 --flavor AC2_16X120X100 --san
+
+(*) Nvidia Cloud docker registry API Key
+Usage
+Use your API key to log in to the NGC registry by entering the following command and following the prompts:
+
+docker login nvcr.io
+
+Username: $oauthtoken
+Password: Ymlia2pwMmJxM2oxanNmamVpcW5jMWZsNmE6OTA1OTUzZmUtNmRhYS00MjExLWI4OWEtZTdhYTU2YTcwYzM3
+
+API Key generated successfully. This is the only time your API Key will be displayed. Keep your API Key secret.
+Do not share it or store it in a place where others can see or copy it.
+API Key: Ymlia2pwMmJxM2oxanNmamVpcW5jMWZsNmE6OTA1OTUzZmUtNmRhYS00MjExLWI4OWEtZTdhYTU2YTcwYzM3
+
+(*) Clone Git to VMs
+cd /data
+git clone https://github.com/Stanley-Ye/2019-Fall-W251.git
+
+(*) Build Docker file
+cd /data/2019-Fall-W251/week09/hw/docker
+docker build -t openseq2seq .
+
+(*) Launch Docker
+docker run --runtime=nvidia -d --name openseq2seq --net=host -e SSH_PORT=4444 -v /data:/data -p 6006:6006 openseq2seq
+docker exec -ti openseq2seq bash
+
+mpirun -n 2 -H 158.175.129.107,158.175.129.108 --allow-run-as-root hostname
+
+cd /opt/OpenSeq2Seq 
+scripts/get_en_de.sh /data/wmt16_de_en
+
+cp example_configs/text2text/en-de/transformer-base.py /data
+
+

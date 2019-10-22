@@ -1,0 +1,5 @@
+(*) Get a pair of GPU VMs in Softlayer
+ibmcloud sl vs create --datacenter=lon06 --hostname=p100a --domain=sye.com --image=2263543 --billing=hourly  --network 1000 --key=1418191 --flavor AC1_16X120X100 --san
+ibmcloud sl vs create --datacenter=lon06 --hostname=p100b --domain=sye.com --image=2263543 --billing=hourly  --network 1000 --key=1418191 --flavor AC1_16X120X100 --san
+ibmcloud sl vs create --datacenter=lon04 --hostname=v100a --domain=sye.com --image=2263543 --billing=hourly  --network 1000 --key=1418191 --flavor AC2_16X120X100 --san
+ibmcloud sl vs create --datacenter=lon04 --hostname=v100b --domain=sye.com --image=2263543 --billing=hourly  --network 1000 --key=1418191 --flavor AC2_16X120X100 --san

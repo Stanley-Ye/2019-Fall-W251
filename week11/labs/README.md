@@ -11,7 +11,7 @@ You will see a button to create all the required resources:
 ![](CreateResources.png)
 
 ## Step 1
-Learn the basics of reinforcement learning (Optional / ~10 mins)
+Learn the basics of reinforcement learning (Required / ~10 mins)
 
 ![](StartLearningRL.png)
 
@@ -27,7 +27,7 @@ Click the "Create Model" button and fill out the details:
  - Model name
  - Environment Simulation **Pick the re:Invent 2018 track for this lab**
  - Action Space **Tweak the steering angle, granularity, speed, speed granularity however you please**
- - Use the default reward function
+ - Pick a reward function (based on what you learned in the "basics" walkthrough)
  - Use the default Hyperparameters
  - Use the default stop condition of 60 minutes
 
@@ -42,3 +42,9 @@ After the training is complete, run an evaluation of the model.
  - Compare your results to others. 
  - Did you change any parameters that made your model perform better or worse? 
  - Does your car run very well on other tracks?
+
+## Fun Links:
+ - [AWS Racer Reward function inputs](https://docs.aws.amazon.com/deepracer/latest/developerguide/deepracer-reward-function-input.html)
+ - [Huber loss](https://en.wikipedia.org/wiki/Huber_loss)
+ - [Proximal Policy Optimization](https://arxiv.org/pdf/1707.06347.pdf) and [AWS Racer Primer on PPO](https://docs.aws.amazon.com/deepracer/latest/developerguide/deepracer-how-it-works-reinforcement-learning-algorithm.html)
+ 

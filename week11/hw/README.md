@@ -1,190 +1,87 @@
-# Intro to Gazebo
+# Homework 11 -- More fun with OpenAI Gym!
 
-Gazebo is a robotics simulator used to build and test robots in a 3D environment with a physics engine for running simulations and a graphical environment to watch them.
+In this homework, you will be training a Lunar Lander to land properly **using your Jetson TX2**. There is a video component to this file, so use a display or VNC.
 
-In this homework, you will go through a demo to build a simple robot, then build one of your own.
+There are two python scripts used for this process. The first file, `lunar_lander.py`, defines the Lunar Lander for OpenAI Gym. It also defines the keras model.
 
-**Your homework submission will be the .sdf file and .config file so we can run the simulation on our own Gazebo environment.**
+The second file, `run_lunar_lander.py`, instantiates the Lunar Lander environment and runs it.
 
-The first step is to create a VM from the base image created with Gazebo pre-installed:
+The code that creates the model in `lunar_lander.py` is:
 
 ```
-ibmcloud sl vs create --datacenter=lon06 --hostname=cpus --domain=myhost.com --billing=hourly  --network=1000  --flavor=C1_16X16X100 --san --image=2299227 --key=XXXXXXX
+def nnmodel(input_dim):
+    model = Sequential()
+    model.add(Dense(32, input_dim=input_dim, activation='relu'))
+    model.add(Dense(16, activation='sigmoid'))
+    model.add(Dense(1))
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
+    return model
+```
+ 
+In its current state, the model which is created is not very good.
+
+For this homework, you should adjust the model parameters and the training parameters (total iterations and threshold) to get better results. You should do a little research into how the parameters affect the resulting model. For example, is `adam` better than `adamax`?
+
+You should try at least three different configurations (one can be the initial "base" configuration) and compare your results. The goal is to increase the number of successful landings (noted by the output "Landed it!").
+
+The training parameters are in the `run_lunar_lander.py` file:
+
+```
+.
+.
+.
+    model = nnmodel(10)
+
+.
+.
+.
+    training_thr = 3000
+    total_itrs = 50000
+.
+.
+.
+        if steps > training_thr and steps %1000 ==0:
+            # re-train a model
+            print("training model model")
+            modelTrained = True
+            model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 10, batch_size=20)
+.
+.
+.
+
+``` 
+
+To run the environment, use these commands (ensure you have all the files from the hw11 github folder in your current directory):
+
+```
+sudo docker build -t lander -f Dockerfile.lander .
+xhost +
+sudo docker run -it --rm --net=host --runtime nvidia  -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix:rw --privileged -v /tmp/videos:/tmp/videos lander
 ```
 
-Make sure you replace `XXXXXXX` with your ssh key ID. You can also choose a data center that's closer to you geographically.
+You will have a lot of mp4 files in `/tmp/videos` on your TX2. You can use VLC to watch the videos of your landing attempts to see the improvement of your model over the iterations.
 
-The VM will need ssh access disabled for password authentication (refer to homework 2 if you need help).
+## To Turn In
+You should upload two or three videos showing your best model to Cloud Object Storage and provide links using the instructions below.
 
-You can connect using either Microsoft Remote Desktop Protocol (from Windows or Mac) or TurboVNC.
+Also, submit a write-up of the tweaks you made to the model and the effect they had on the results. What parameters did you change? Did they improve or degrade the model?
 
-RDP connection: user id `w251` password `thisisalongpassword`
+Grading is based on the changes made and the observed output, not on the accuracy of the model.
 
-TurboVNC connection: ssh to the node and run `/opt/TurboVNC/bin/vncserver` to start the VNC Server. You can download the VNC client from [here](https://sourceforge.net/projects/turbovnc/files/2.2.2/). The default VNC password is `quarter` and can be changed with the `/opt/TurboVNC/bin/vncpasswd` command.
+We will compare results in class.
 
-Once you connect to the desktop, start a Terminal window (using the launch icon at the bottom of the screen) and launch the Gazebo application with the `gazebo` command.
 
-## Create a robot
-This robot comes from the gazebosim website: http://gazebosim.org/tutorials?tut=build_robot&cat=build_robot
+#### Enable http access to Cloud Object Storage
 
-This is a simple robot (called `My Robot`) that is pre-loaded in your Gazebo software. It is on the Insert tab:
-
-![](InsertTab.png)
-
-If you select `My Robot`, you can place it into the 3D grid:
-
-![](RobotOnGrid.png)
-
-You can now make the robot move around. Drag the three dots on the right side of the screen to the left to expose the Joints pane:
-
-![](JointVelocity.png)
-
-and give a value (like `0.020`) to one or both wheels. If you don't see the hinge values, click on the robot to select it (there should be a white wireframe around it).
-
-### Looking at the components in the model
-The sdf file (model.sdf from this repo) has the following components to build the robot:
-
-#### Chassis
 ```
-          <link name='chassis'>
-            <pose>0 0 .1 0 0 0</pose>
+Here's how to enable http access to the S3 COS:
+1) create a bucket & upload a file, remember the resiliency you pick and the location
+2) Go to Buckets -> Access Policies -> Public Access
+3) click the "Create access policy" button
+4) Go to Endpoint (on the left menu) and select your resiliency to find your endpoint (mine was "Regional" because that's how I created my COS)
+5) Your endpoint is the Public location plus your bucket name plus the file
 
-            <collision name='collision'>
-              <geometry>
-                <box>
-                  <size>.4 .2 .1</size>
-                </box>
-              </geometry>
-            </collision>
+Example: https://s3.eu-gb.cloud-object-storage.appdomain.cloud/brooklyn-artifacts/IBM_MULTICLOUD_MANAGER_3.1.2_KLUS.tar.gz
 
-            <visual name='visual'>
-              <geometry>
-                <box>
-                  <size>.4 .2 .1</size>
-                </box>
-              </geometry>
-            </visual>
-          </link>
+In this example, the bucket is "brooklyn-artifacts" and the single Region is eu-gb
 ```
-The robot chassis has two components, `collision` and `visual`. The collision component specifies the shape for the collision detection engine (the physics) and the visual component is used for the rendering engine.
-
-#### Caster
-```
-          <collision name='caster_collision'>
-            <pose>-0.15 0 -0.05 0 0 0</pose>
-            <geometry>
-                <sphere>
-                <radius>.05</radius>
-              </sphere>
-            </geometry>
-
-            <surface>
-              <friction>
-                <ode>
-                  <mu>0</mu>
-                  <mu2>0</mu2>
-                  <slip1>1.0</slip1>
-                  <slip2>1.0</slip2>
-                </ode>
-              </friction>
-            </surface>
-          </collision>
-
-          <visual name='caster_visual'>
-            <pose>-0.15 0 -0.05 0 0 0</pose>
-            <geometry>
-              <sphere>
-                <radius>.05</radius>
-              </sphere>
-            </geometry>
-          </visual>
-```
-The caster is a ball that sits on the bottom of the robot and acts as a wheel. It also has a collision element (which has a surface element to define the friction) and a visual element.
-
-#### Left wheel
-```
-      <link name="left_wheel">
-        <pose>0.1 0.13 0.1 0 1.5707 1.5707</pose>
-        <collision name="collision">
-          <geometry>
-            <cylinder>
-              <radius>.1</radius>
-              <length>.05</length>
-            </cylinder>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <cylinder>
-              <radius>.1</radius>
-              <length>.05</length>
-            </cylinder>
-          </geometry>
-        </visual>
-      </link>
-```
-
-#### Right wheel
-```
-      <link name="right_wheel">
-        <pose>0.1 -0.13 0.1 0 1.5707 1.5707</pose>
-        <collision name="collision">
-          <geometry>
-            <cylinder>
-              <radius>.1</radius>
-              <length>.05</length>
-            </cylinder>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <cylinder>
-              <radius>.1</radius>
-              <length>.05</length>
-            </cylinder>
-          </geometry>
-        </visual>
-      </link>
-```
-
-#### Wheel joints
-```
-      <joint type="revolute" name="left_wheel_hinge">
-        <pose>0 0 -0.03 0 0 0</pose>
-        <child>left_wheel</child>
-        <parent>chassis</parent>
-        <axis>
-          <xyz>0 1 0</xyz>
-        </axis>
-      </joint>
-
-      <joint type="revolute" name="right_wheel_hinge">
-        <pose>0 0 0.03 0 0 0</pose>
-        <child>right_wheel</child>
-        <parent>chassis</parent>
-        <axis>
-          <xyz>0 1 0</xyz>
-        </axis>
-      </joint>
-```
-
-Your robot should be driving around now.
-
-## Build your own robot
-You can delete the model robot from the screen by right-clicking on it in the `World` tab:
-
-![](DeleteRobot.png)
-
-Your assignment is to build a new robot with six legs and a grabber claw.
-
-You can use the existing assets on the `Insert` tab in Gazebo from http://models.gazebosim.org.
-
-The tutorials on http://gazebosim.org/tutorials are also excellent examples.
-
-Here is an excellent example of starting a new project in Gazebo:
-
-http://gazebosim.org/tutorials?tut=build_robot&cat=build_robot
-
-Attach the `.sdf` and `.config` files to your homework submission.
-
-## The VM is expensive and should be canceled when you are done

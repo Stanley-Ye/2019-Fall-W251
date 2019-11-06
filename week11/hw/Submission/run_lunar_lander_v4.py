@@ -44,7 +44,7 @@ if __name__=="__main__":
             # re-train a model
             print("training model model")
             modelTrained = True
-            model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 10, batch_size=20)
+            model.fit(np.array(X_train),np.array(y_train).reshape(len(y_train),1), epochs = 10, batch_size=100)
 
         if modelTrained:
             maxr = -1000

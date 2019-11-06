@@ -1,0 +1,49 @@
+
+# Run #1: Baseline
+cp -p run_lunar_lander_v1.py run_lunar_lander.py
+cp -p lunar_lander_v1.py lunar_lander.py
+sudo docker build -t lander -f Dockerfile.lander .
+echo > log_v1.txt
+date >> log_v1.txt
+sudo docker run -it --rm --net=host --runtime nvidia  -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix:rw --privileged -v /tmp/videos:/tmp/videos lander >> log_v1.txt
+date >> log_v1.txt
+rm -rf /tmp/videos_v1
+mv /tmp/videos /tmp/videos_v1
+
+
+# Run #2: optimizer="adam" -> optimizer="adamax"
+cp -p run_lunar_lander_v2.py run_lunar_lander.py
+cp -p lunar_lander_v2.py lunar_lander.py
+sudo docker build -t lander -f Dockerfile.lander .
+echo > log_v2.txt
+date >> log_v2.txt
+sudo docker run -it --rm --net=host --runtime nvidia  -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix:rw --privileged -v /tmp/videos:/tmp/videos lander >> log_v2.txt
+date >> log_v2.txt
+rm -rf /tmp/videos_v2
+mv /tmp/videos /tmp/videos_v2
+
+
+# Run #3: Retrain model every 1K --> 5K steps.
+cp -p run_lunar_lander_v3.py run_lunar_lander.py
+cp -p lunar_lander_v3.py lunar_lander.py
+sudo docker build -t lander -f Dockerfile.lander .
+echo > log_v3.txt
+date >> log_v3.txt
+sudo docker run -it --rm --net=host --runtime nvidia  -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix:rw --privileged -v /tmp/videos:/tmp/videos lander >> log_v3.txt
+date >> log_v3.txt
+rm -rf /tmp/videos_v3
+mv /tmp/videos /tmp/videos_v3
+
+
+# Run #4: Model batch size 20 -> 100.
+cp -p run_lunar_lander_v4.py run_lunar_lander.py
+cp -p lunar_lander_v4.py lunar_lander.py
+sudo docker build -t lander -f Dockerfile.lander .
+echo > log_v4.txt
+date >> log_v4.txt
+sudo docker run -it --rm --net=host --runtime nvidia  -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix:rw --privileged -v /tmp/videos:/tmp/videos lander >> log_v4.txt
+date >> log_v4.txt
+rm -rf /tmp/videos_v4
+mv /tmp/videos /tmp/videos_v4
+
+

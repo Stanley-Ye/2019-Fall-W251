@@ -40,7 +40,7 @@ if __name__=="__main__":
 
         # This 'if' statement determines how often your model is re-trained
 
-        if steps > training_thr and steps %1000 ==0:
+        if steps > training_thr and steps %5000 ==0:
             # re-train a model
             print("training model model")
             modelTrained = True

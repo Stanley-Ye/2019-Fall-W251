@@ -1,0 +1,11 @@
+# Run #3: Retrain model every 1K --> 5K steps.
+cp -p run_lunar_lander_v3.py run_lunar_lander.py
+cp -p lunar_lander_v3.py lunar_lander.py
+sudo docker build -t lander -f Dockerfile.lander .
+echo > log_v3.txt
+date > start_v3.txt
+sudo docker run -it --rm --net=host --runtime nvidia  -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix:rw --privileged -v /tmp/videos:/tmp/videos lander | tee log_v3.txt
+date > end_v3.txt
+rm -rf /tmp/videos_v3
+mv /tmp/videos /tmp/videos_v3
+

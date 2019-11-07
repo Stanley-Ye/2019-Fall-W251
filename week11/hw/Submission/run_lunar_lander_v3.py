@@ -30,7 +30,7 @@ if __name__=="__main__":
     tr = 0
     prev_r = 0
     training_thr = 3000
-    total_itrs = 50000
+    total_itrs = 25000
     successful_steps = []
 
     while steps <= total_itrs:
@@ -82,14 +82,9 @@ if __name__=="__main__":
         tr = tr + r
 
         steps += 1
-
-        # Wait for 45K steps before storing frames.
-        frame_start = 45000
-        if steps > frame_start:
-            frame = env.render(mode='rgb_array')
-            frames.append(frame)
-            
-        if steps > frame_start and steps %1000 == 0:
+        frame = env.render(mode='rgb_array')
+        frames.append(frame)
+        if steps >= training_thr and steps %1000 == 0:
             fname = "/tmp/videos/frame"+str(steps)+".mp4"
             skvideo.io.vwrite(fname, np.array(frames))
             del frames

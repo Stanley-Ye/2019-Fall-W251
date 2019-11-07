@@ -1,0 +1,101 @@
+2019-11-06 07:28:56.165148: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.0
+Successful Landing!!!  2179
+Total successes are:  1
+Successful Landing!!!  2593
+Total successes are:  2
+Successful Landing!!!  3269
+Total successes are:  3
+Successful Landing!!!  3382
+Total successes are:  4
+Successful Landing!!!  3969
+Total successes are:  5
+2019-11-06 07:35:52.058843: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcuda.so.1
+2019-11-06 07:35:52.198236: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.0
+2019-11-06 07:35:52.218018: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10.0
+2019-11-06 07:35:52.246804: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcufft.so.10.0
+2019-11-06 07:35:52.259729: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcurand.so.10.0
+2019-11-06 07:35:52.280256: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusolver.so.10.0
+2019-11-06 07:35:52.294487: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcusparse.so.10.0
+2019-11-06 07:35:52.347312: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudnn.so.7
+2019-11-06 07:35:52.349820: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcudart.so.10.0
+2019-11-06 07:35:57.126943: I tensorflow/stream_executor/platform/default/dso_loader.cc:42] Successfully opened dynamic library libcublas.so.10.0
+Successful Landing!!!  5027
+Total successes are:  6
+Successful Landing!!!  5468
+Total successes are:  7
+Successful Landing!!!  6218
+Total successes are:  8
+Successful Landing!!!  6930
+Total successes are:  9
+Successful Landing!!!  9210
+Total successes are:  10
+Successful Landing!!!  9691
+Total successes are:  11
+Successful Landing!!!  17199
+Total successes are:  12
+Successful Landing!!!  17514
+Total successes are:  13
+Successful Landing!!!  18012
+Total successes are:  14
+Successful Landing!!!  18986
+Total successes are:  15
+Successful Landing!!!  21465
+Total successes are:  16
+Successful Landing!!!  24625
+Total successes are:  17
+Successful Landing!!!  26783
+Total successes are:  18
+Successful Landing!!!  31679
+Total successes are:  19
+Successful Landing!!!  32400
+Total successes are:  20
+Successful Landing!!!  32987
+Total successes are:  21
+Successful Landing!!!  34258
+Total successes are:  22
+Successful Landing!!!  35121
+Total successes are:  23
+Successful Landing!!!  35904
+Total successes are:  24
+Successful Landing!!!  36952
+Total successes are:  25
+Successful Landing!!!  37254
+Total successes are:  26
+Successful Landing!!!  37482
+Total successes are:  27
+Successful Landing!!!  37877
+Total successes are:  28
+Successful Landing!!!  39439
+Total successes are:  29
+Successful Landing!!!  39751
+Total successes are:  30
+Successful Landing!!!  40084
+Total successes are:  31
+Successful Landing!!!  40536
+Total successes are:  32
+Successful Landing!!!  40747
+Total successes are:  33
+Successful Landing!!!  41177
+Total successes are:  34
+Successful Landing!!!  42649
+Total successes are:  35
+Successful Landing!!!  42784
+Total successes are:  36
+Successful Landing!!!  43522
+Total successes are:  37
+Successful Landing!!!  46127
+Total successes are:  38
+Successful Landing!!!  46455
+Total successes are:  39
+Successful Landing!!!  47414
+Total successes are:  40
+Successful Landing!!!  47669
+Total successes are:  41
+Successful Landing!!!  48404
+Total successes are:  42
+Successful Landing!!!  48465
+Total successes are:  43
+Successful Landing!!!  48932
+Total successes are:  44
+Successful Landing!!!  49786
+Total successes are:  45

@@ -82,15 +82,20 @@ if __name__=="__main__":
         tr = tr + r
 
         steps += 1
-        frame = env.render(mode='rgb_array')
-        frames.append(frame)
-        if steps >= training_thr and steps %1000 == 0:
+
+        # Wait for 45K steps before storing frames.
+        frame_start = 45000
+        if steps > frame_start:
+            frame = env.render(mode='rgb_array')
+            frames.append(frame)
+            
+        if steps > frame_start and steps %1000 == 0:
             fname = "/tmp/videos/frame"+str(steps)+".mp4"
             skvideo.io.vwrite(fname, np.array(frames))
             del frames
             frames = []
 
-            
+
 if __name__=="__main__":
     env = LunarLanderContinuous()
     prev_s = env.reset()
@@ -106,14 +111,17 @@ if __name__=="__main__":
         new_s, r, done, info = env.step(a)
 
         if modelTrained:
-            batch_size = 100
-            a_candidates = np.random.uniform(low=-1, high=1, size=(batch_size, 2))
-            s_expanded = np.broadcast_to(new_s, (batch_size, 8))
-            all_candidates = np.concatenate([s_expanded, a_candidates], axis=1)
-            r_pred = model.predict(all_candidates)
-            
-            max_idx = np.argmax(r_pred)
-            a = a_candidates[max_idx]
+            maxr = -1000
+            maxa = None
+            for i in range(100):
+                a1 = np.random.randint(-1000,1000)/1000
+                a2 = np.random.randint(-1000,1000)/1000
+                testa = [a1,a2]
+                r_pred = model.predict(np.array(list(new_s)+list(testa)).reshape(1,len(list(new_s)+list(testa))))
+                if r_pred > maxr:
+                    maxr = r_pred
+                    maxa = testa
+            a = np.array(maxa)
 
         else:
             a = np.array([np.random.randint(-1000,1000)/1000,\

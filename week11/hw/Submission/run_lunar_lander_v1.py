@@ -30,7 +30,7 @@ if __name__=="__main__":
     tr = 0
     prev_r = 0
     training_thr = 3000
-    total_itrs = 50000
+    total_itrs = 25000
     successful_steps = []
 
     while steps <= total_itrs:

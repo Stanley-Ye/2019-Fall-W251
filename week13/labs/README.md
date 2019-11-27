@@ -2,7 +2,7 @@
 Even though we are in the middle 2019, it's impossible not to observe that running end to end DL applications remains suprisingly complex. Perhaps the rapid rate at which new frameworks are being developed is to blame.  Another aspect could be that a lot of time the focus is on the data science aspects only - e.g. on the development of new models, but not on the development of end to end applications. 
 
 In this session, we will review:
-* Nvidia Digits - a slightly dated but still, a ridiculously easy to use tool for training and inference
+* Nvidia Digits - a slightly dated but still, a ridiculously easy to use tool for training and inference.  Note that the [Nvidia Jarvis](https://developer.nvidia.com/nvidia-jarvis) project is supposed to be the successor to DIGITS.
 * The DeepStream SDK, a bleeding edge yet not-so-easy-to use tool for processing multiple video streams in real time, 
 * Dusty Franklin's framework - initially designed for inference only on the Jetson family of devices but now extended to do some training as well.
 
@@ -13,12 +13,24 @@ Some of you may have already done these, but in case you didn't, this is the tim
 * [Object Detection with Digits](https://github.com/MIDS-scaling-up/v2/tree/master/week07/hw/backup) - review only, we won't be able to complete this in class.  The idea here is to learn that it is possible to train an object detection framework on your own dataset.
 
 ### DeepStream SDK (the official one)
-* With the just released jetpack 4.2.1 , you should be able to run DeepStream SDK on the jetson; We will run it in the Cloud as it's not compatible with 4.2.0
+* Even though the [official page](https://ngc.nvidia.com/catalog/containers/nvidia:deepstream-l4t) states that you need jetpack 4.2.2 , you should be able to run DeepStream SDK on the jetson.  We also provide instructions to run it in the Cloud.
 * The [documentation](https://developer.nvidia.com/deepstream-sdk)
 * The [Smart Parking Application](https://github.com/NVIDIA-AI-IOT/deepstream_360_d_smart_parking_application/tree/master/perception_docker)
 * The [blog post](https://devblogs.nvidia.com/multi-camera-large-scale-iva-deepstream-sdk/) on multi-camera applications
 * The [docker container](https://ngc.nvidia.com/catalog/containers/nvidia:deepstream)
+#### TX2 Instructions
+Grab the container:
+```
+docker run -it --rm --net=host --runtime nvidia  -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix nvcr.io/nvidia/deepstream-l4t:4.0.1-19.09-samples
+```
+Run the 12-camera example:
+```
+cd /deepstream_sdk_v4.0.1_jetson/samples
+deepstream-app -c configs/deepstream-app/source12_1080p_dec_infer-resnet_tracker_tiled_display_fp16_tx2.txt
+```
+You shoud see 12 screens tracking objects simultaneously.
 
+#### Cloud Instructions
 Provision a VM with a P-100 in Soflayer per the [instructions in HW6](https://github.com/MIDS-scaling-up/v2/tree/master/week06/hw), e.g.
 ```
 ibmcloud sl vs create --datacenter=lon06 --hostname=p100a --domain=dima.com --image=2263543 --billing=hourly  --network 1000 --key=1418191 --flavor AC1_8X60X100 --san
@@ -77,14 +89,14 @@ deepstream-app -c configs/deepstream-app/source4_720p_dec_infer-resnet_tracker_s
 ```
 
 ### Deep Learning SDK (the unofficial one, by Dustin Franklin)
-At of July 2019, this functionality is, yet again in flux (sigh).  Nvidia has just dropped [Jetpack 4.2.1](https://developer.nvidia.com/embedded/jetpack) - which is [supposed to introduce Nvidia docker to the Jetson platform](https://devtalk.nvidia.com/default/topic/1046113/jetson-tx2/can-nvidia-docker-run-on-tx2-/) . But, we can't get the on-board camera to work with our docker container introduced in [the homework](https://github.com/MIDS-scaling-up/v2/tree/master/week13/hw). It is possible that the USB camera works, but we could not test it in time.
+At of November 2019, this functionality is yet again and still in flux (sigh).  Even with the 4.2.1 jetpack, we can't get the on-board camera to work with our docker container introduced in [the homework](https://github.com/MIDS-scaling-up/v2/tree/master/week13/hw). It is possible that the USB camera works, but we could not validate it in time. Note that this worked with Jetpack 3.3 so we expect it to work again in the future.
 
 So, let's just prepare the codebase on the Jetson directly:
 ```
 # borrowing from https://github.com/dusty-nv/jetson-inference/blob/master/docs/building-repo.md
-# become root
+
 # in case you don't have these.. 
-apt install -y git cmake 
+sudo apt install -y git cmake 
 # go to the directory of your choosing
 cd 
 # clone the repo
@@ -93,24 +105,26 @@ cd jetson-inference
 git submodule update --init
 mkdir build
 cd build
-cmake ../
-make -j6
-make install
+sudo cmake ../
+sudo make -j6
+sudo make install
 ```
 
 
 #### Notes
+* As you are exploring, just download all networks for image classification, object detection, segmentation when prompted.
+* On the tx2, your camera will be flipped until you follow [these instructions](https://devtalk.nvidia.com/default/topic/1023180/jetson-tx2/imagenet-camera-gets-reverse-orientation-image-on-tx2-with-tr2-1/2) to flip it.
 * Check out the [models](https://github.com/dusty-nv/jetson-inference#pre-trained-models) that Dusty's framework supports. The model downloader tool could be used at any time to download more!
-* It possible to switch between the on-board (Argus) and external USB (v4l2) camera using the flags such as --camera=[/dev/video0], --width=[640], --height=[480], --network=[resnet-18]
+* It possible to switch between the on-board (Argus) and external USB (v4l2) camera using the flags such as --camera=[/dev/video0], --width=[640], --height=[480], --network=[resnet-18]  Note that at as of today (Nov 25th), an attempt to use a usb camera causes the entire TX2 to seize up, cured only by reboot, doublefacepalm.
 * There is a lot of information in this repo, take some time to go through it!
 
 #### Running
-* Run the camera demo, e.g. ```./camera-viewer``` . Close the window to exit the program.
+* Run the camera demo, e.g. ```./camera-viewer``` . See the notes section if your view is flipped. Close the window to exit the program.
 * Run the frame classification demo, e.g. ```./imagenet-camera```.  What is the framerate you are getting? Try [other networks](https://github.com/dusty-nv/jetson-inference/blob/master/docs/imagenet-camera.md)
 * Run the object detection demo, e.g. ```./detectnet-camera```. What is the framerate now?  Experiment with [other networks](https://github.com/dusty-nv/jetson-inference/blob/master/docs/detectnet-camera-2.md)
 * Try to image segmentation demo as well: ```./segnet-camera``` Experiment with [other networks](https://github.com/dusty-nv/jetson-inference/blob/master/docs/segnet-console.md)
 * Remember the homework? Let's go back to [your trained model](https://github.com/dusty-nv/jetson-inference/blob/7e81381a96c1ac5f57f1728afbfdec7f1bfeffc2/docs/pytorch-plants.md) and continue. Convert our model to the ONNX format, and run imagenet-camera against it. 
-* [Earlier in the year](https://github.com/MIDS-scaling-up/v2/tree/master/week07/hw/backup), w251 students trained a DetectNet model on the Kitti dataset.  Follow [these](https://github.com/dusty-nv/jetson-inference/blob/master/docs/detectnet-snapshot.md) and [these](https://github.com/dusty-nv/jetson-inference/blob/master/docs/imagenet-custom.md) instructions to use it for inference with the detectnet camera demo. Here's my command line, after downloading one of our student's [model](http://169.44.201.108:5000/models/20190216-223354-6fb5/download):
+* [Earlier in the year](https://github.com/MIDS-scaling-up/v2/tree/master/week07/hw/backup), some w251 students trained a DetectNet model on the Kitti dataset.  Follow [these](https://github.com/dusty-nv/jetson-inference/blob/master/docs/detectnet-snapshot.md) and [these](https://github.com/dusty-nv/jetson-inference/blob/master/docs/imagenet-custom.md) instructions to use it for inference with the detectnet camera demo. Here's my command line, after downloading one of our student's model:
 ```
 # make sure you move the tgz archive to /jetson-inference/data/networks/kitti/ , decompress, and remove the last layer out of the deploy.prototxt
 NET=networks/kitti
